@@ -54,9 +54,19 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        print(f"Insert({index}, {key}, {value})")
+        new_pair = LinkedPair(key, value)
 
-        self.storage[index] = value
+        if self.storage[index]:
+            current_node = self.storage[index]
+            next_node = link_list.next
+
+            while next_node:
+                current_node = next_node
+                next_node = current_node.next
+
+            current_node.next = new_pair
+        else:
+            self.storage[index] = new_pair
 
 
     def remove(self, key):
@@ -84,9 +94,9 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        print(f"Retrieve({index}, {key})")
-
         if index < len(self.storage):
+            print(f"Retrieve({index}, {key}, {self.storage[index]})")
+            # TODO use LinkedPair
             return self.storage[index]
         else:
             return None
