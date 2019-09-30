@@ -141,14 +141,20 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-        # new_storage = [None] * 2 * len(self.storage)
+        old_storage = self.storage
+        self.capacity = 2 * len(self.storage)
+        self.storage = [None] * self.capacity
 
-        # for k,v in self.storage.getitems():
-        #     TODO rehash key
-        #     new_storage[k] = v
-        
-        # self.storage = new_storage
+        for i in range(0, len(old_storage)):
+            if old_storage[i]:
+                current_node = old_storage[i]
+                self.insert(current_node.key, current_node.value)
+
+                next_node = current_node.next
+                while next_node:
+                    self.insert(next_node.key, next_node.value)
+                    current_node = next_node
+                    next_node = current_node.next
 
 
 if __name__ == "__main__":
