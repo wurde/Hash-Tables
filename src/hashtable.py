@@ -116,10 +116,20 @@ class HashTable:
         '''
         index = self._hash_mod(key)
 
-        if index < len(self.storage):
-            print(f"Retrieve({index}, {key}, {self.storage[index]})")
-            # TODO use LinkedPair
-            return self.storage[index]
+        if self.storage[index]:
+            current_node = self.storage[index]
+
+            if current_node.key == key:
+                return current_node.value
+            else:
+                next_node = current_node.next
+
+                while next_node:
+                    current_node = next_node
+                    next_node = current_node.next
+
+                    if current_node.key == key:
+                        return current_node.value
         else:
             return None
 
