@@ -33,15 +33,23 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        n = 5381
 
+        for character in key:
+            n = n * 33 + ord(character)
+
+        return n % 2**64
 
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
-        return self._hash(key) % self.capacity
+        # Normal hash. Success.
+        # return self._hash(key) % self.capacity
+
+        # DJB2 hash. Success.
+        return self._hash_djb2(key) % self.capacity
 
 
     def insert(self, key, value):
