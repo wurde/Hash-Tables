@@ -58,13 +58,23 @@ class HashTable:
 
         if self.storage[index]:
             current_node = self.storage[index]
-            next_node = link_list.next
 
-            while next_node:
-                current_node = next_node
+            if current_node.key == key:
+                current_node.value = value
+            else:
+                missing = True
                 next_node = current_node.next
 
-            current_node.next = new_pair
+                while next_node:
+                    current_node = next_node
+                    next_node = current_node.next
+
+                    if current_node.key == key:
+                        current_node.value = value
+                        missing = False
+
+                if missing is True:
+                    current_node.next = new_pair
         else:
             self.storage[index] = new_pair
 
@@ -77,11 +87,23 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-        # if self._hash(key) not in self.storage:
-        #     return
-        # else:
-        #     del self.storage[self._hash(key)]
+        index = self._hash_mod(key)
+
+        if self.storage[index]:
+            current_node = self.storage[index]
+
+            if current_node.key == key:
+                self.storage[index] = current_node.next
+            else:
+                next_node = link_list.next
+
+                # TODO find match node.value == value
+                # TODO remove from linked list
+                while next_node:
+                    current_node = next_node
+                    next_node = current_node.next
+
+                current_node.next = new_pair
 
 
     def retrieve(self, key):
