@@ -95,15 +95,15 @@ class HashTable:
             if current_node.key == key:
                 self.storage[index] = current_node.next
             else:
-                next_node = link_list.next
+                next_node = current_node.next
 
-                # TODO find match node.value == value
-                # TODO remove from linked list
                 while next_node:
+                    prev_node = current_node
                     current_node = next_node
                     next_node = current_node.next
 
-                current_node.next = new_pair
+                    if current_node.key == key:
+                        prev_node.next = next_node
 
 
     def retrieve(self, key):
