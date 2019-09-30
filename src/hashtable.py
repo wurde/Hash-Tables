@@ -7,6 +7,7 @@ class LinkedPair:
         self.value = value
         self.next = None
 
+
 class HashTable:
     '''
     A hash table that with `capacity` buckets
@@ -51,8 +52,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
 
+        print(f"Insert({index}, {key}, {value})")
+
+        self.storage[index] = value
 
 
     def remove(self, key):
@@ -64,6 +68,10 @@ class HashTable:
         Fill this in.
         '''
         pass
+        # if self._hash(key) not in self.storage:
+        #     return
+        # else:
+        #     del self.storage[self._hash(key)]
 
 
     def retrieve(self, key):
@@ -74,7 +82,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        print(f"Retrieve({index}, {key})")
+
+        if index < len(self.storage):
+            return self.storage[index]
+        else:
+            return None
 
 
     def resize(self):
@@ -85,7 +100,13 @@ class HashTable:
         Fill this in.
         '''
         pass
+        # new_storage = [None] * 2 * len(self.storage)
 
+        # for k,v in self.storage.getitems():
+        #     TODO rehash key
+        #     new_storage[k] = v
+        
+        # self.storage = new_storage
 
 
 if __name__ == "__main__":
