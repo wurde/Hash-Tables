@@ -7,6 +7,7 @@ class LinkedPair:
         self.value = value
         self.next = None
 
+
 class HashTable:
     '''
     A hash table that with `capacity` buckets
@@ -32,15 +33,23 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        n = 5381
 
+        for character in key:
+            n = n * 33 + ord(character)
+
+        return n % 2**64
 
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
-        return self._hash(key) % self.capacity
+        # Normal hash. Success.
+        # return self._hash(key) % self.capacity
+
+        # DJB2 hash. Success.
+        return self._hash_djb2(key) % self.capacity
 
 
     def insert(self, key, value):
@@ -51,8 +60,31 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
 
+        new_pair = LinkedPair(key, value)
+
+        if self.storage[index]:
+            current_node = self.storage[index]
+
+            if current_node.key == key:
+                current_node.value = value
+            else:
+                missing = True
+                next_node = current_node.next
+
+                while next_node:
+                    current_node = next_node
+                    next_node = current_node.next
+
+                    if current_node.key == key:
+                        current_node.value = value
+                        missing = False
+
+                if missing is True:
+                    current_node.next = new_pair
+        else:
+            self.storage[index] = new_pair
 
 
     def remove(self, key):
@@ -63,7 +95,23 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        if self.storage[index]:
+            current_node = self.storage[index]
+
+            if current_node.key == key:
+                self.storage[index] = current_node.next
+            else:
+                next_node = current_node.next
+
+                while next_node:
+                    prev_node = current_node
+                    current_node = next_node
+                    next_node = current_node.next
+
+                    if current_node.key == key:
+                        prev_node.next = next_node
 
 
     def retrieve(self, key):
@@ -74,7 +122,24 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        if self.storage[index]:
+            current_node = self.storage[index]
+
+            if current_node.key == key:
+                return current_node.value
+            else:
+                next_node = current_node.next
+
+                while next_node:
+                    current_node = next_node
+                    next_node = current_node.next
+
+                    if current_node.key == key:
+                        return current_node.value
+        else:
+            return None
 
 
     def resize(self):
@@ -84,8 +149,20 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        old_storage = self.storage
+        self.capacity = 2 * len(self.storage)
+        self.storage = [None] * self.capacity
 
+        for i in range(0, len(old_storage)):
+            if old_storage[i]:
+                current_node = old_storage[i]
+                self.insert(current_node.key, current_node.value)
+
+                next_node = current_node.next
+                while next_node:
+                    self.insert(next_node.key, next_node.value)
+                    current_node = next_node
+                    next_node = current_node.next
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 import unittest
+import sys
 
 from hashtable import HashTable
 
@@ -173,8 +174,11 @@ class TestHashTable(unittest.TestCase):
 
         return_value = ht.retrieve("key-0")
         self.assertTrue(return_value == "val-0")
+
         return_value = ht.retrieve("key-1")
         self.assertTrue(return_value == "val-1")
+        #=> AssertionError False is not true
+
         return_value = ht.retrieve("key-2")
         self.assertTrue(return_value == "val-2")
         return_value = ht.retrieve("key-3")
